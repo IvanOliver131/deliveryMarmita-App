@@ -1,0 +1,7 @@
+{
+  "name": "AppDelivery",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

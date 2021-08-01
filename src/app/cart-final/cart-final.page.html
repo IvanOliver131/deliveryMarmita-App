@@ -1,0 +1,32 @@
+<app-top-bar></app-top-bar>
+
+<ion-content>
+  <ion-list *ngFor="let p of productsFinal, let i = index">
+    <ion-card>        
+      <ion-item>
+        <ion-icon name="trash" slot="end" (click)="remove(p, i)"></ion-icon>
+        <ion-card-header>
+          <ion-card-subtitle>{{p.name}} </ion-card-subtitle>
+          <ion-card-subtitle>Valor: {{p.price}}</ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>
+    </ion-card>
+  </ion-list>
+</ion-content>
+
+<div class="line">
+  <ion-title slot="end"  class="valor-total">
+    Total: R{{ valorTotal | currency}}
+  </ion-title>
+</div>
+<ion-toolbar class="tool-advance-continue">
+  <ion-title routerLink="/home" class="advance-continue" >
+    CONTINUAR COMPRANDO
+  </ion-title>
+</ion-toolbar>
+<ion-toolbar class="tool-advance">
+  <ion-title routerLink="/cart-confirm" class="advance" >
+    FINALIZAR PEDIDO
+  </ion-title>
+</ion-toolbar>
+

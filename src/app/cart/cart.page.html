@@ -1,0 +1,56 @@
+<app-top-bar></app-top-bar>
+
+<ion-content>
+  <ion-list *ngFor="let p of allProducts, let i = index">
+    <ion-card>
+      <ion-title class="label-title">{{p.name}}</ion-title>
+      <ion-card-header>
+        <ion-card-subtitle><span class="label-span">Valor:</span> {{p.price}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-label class="labels-cart">Opcionais</ion-label>
+      </ion-item>
+      <ion-card-header>
+        <ion-list *ngFor="let o of meetOption, let j = index">
+          <div style="display: flex; justify-content: flex-end;">
+            <ion-label style="display: inline-block; margin-right: auto;" slot="start">{{o.name}}</ion-label>
+            <ion-checkbox style="justify-content: flex-end;" fill="outline" color="primary" [(ngModel)]="optionMeet[j]"
+            (click)="addOption(o.price, i)"></ion-checkbox>
+          </div>
+        </ion-list>
+      </ion-card-header>     
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-icon class="button-select" name="remove-circle" slot="end" (click)="removeItem(p)"></ion-icon>
+        <ion-label>{{p.amount}}</ion-label>
+        <ion-icon class="button-select" name="add-circle" slot="end" (click)="addItem(p)"></ion-icon>
+        <ion-label slot="start" class="labels-cart">Quantidade</ion-label>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-label position="floating" class="labels-cart">Observações</ion-label>
+        <ion-textarea style="padding: 5px;" [(ngModel)]="observation[i]"></ion-textarea>
+      </ion-item>
+    </ion-card>
+  </ion-list>
+  
+  <hr>
+</ion-content>
+
+<div class="line">
+  <ion-title slot="end" class="valor-total">
+    Total: R{{valorTotal | currency}}
+  </ion-title>
+</div>
+<ion-toolbar class="tool-advance">
+  <ion-title (click)="goToCartFinal()" class="advance">
+    AVANÇAR
+  </ion-title>
+</ion-toolbar>

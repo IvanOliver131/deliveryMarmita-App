@@ -1,0 +1,20 @@
+.products{
+  --background: rgb(243, 243, 243);
+  box-shadow: none !important;
+}
+
+.products:hover{
+  --background: rgb(226, 226, 226);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+  cursor: pointer;
+}
+
+.text-content{
+  font-weight: 900;
+  color: black;
+}
+
+
+@media (prefers-color-scheme: dark) {
+
+}

@@ -1,0 +1,63 @@
+.tool-advance{
+  --background: rgb(231, 62, 0);
+}
+
+.tool-advance:hover{
+  --background: rgb(218, 76, 25);
+  cursor: pointer;
+}
+
+.advance{
+  font-weight: bold; 
+  text-align: center;
+  color: black;
+}
+
+.line{
+  border-top: 1px solid rgb(187, 187, 187);
+}
+
+.tool-advance-continue{
+  --background:white;
+  border-top: 1px solid rgb(187, 187, 187);
+}
+
+.tool-advance-continue:hover{
+  --background: rgb(218, 218, 218);
+  cursor: pointer;
+}
+
+.valor-total{
+  font-size: 16px; 
+  font-weight: bold; 
+  margin: 10px
+}
+
+.advance-continue{
+  font-weight: bold; 
+  text-align: center;
+  color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  .valor-total{
+    color: white;
+  }
+
+  .labels-cart{
+    color: white;
+  }
+  
+  .label-option{
+    color: white;
+  }
+
+  .label-title{
+    color: white; 
+  }
+
+  .label-span{
+    font-weight: bold; 
+    color: white;
+  }
+}

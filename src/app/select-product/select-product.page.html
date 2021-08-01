@@ -1,0 +1,38 @@
+<app-top-bar></app-top-bar>
+
+<ion-content>
+  <ion-list>
+    <ion-card class="card-food" *ngFor="let p of productLst, let i = index">
+      <ion-item class="item-food">
+        <img slot="start" [src]="transformImageUrl(p.image)" onerror="this.src='../../assets/images/dump3.png'"
+          [alt]="p.name" class="img-food">
+        <ion-card-header>
+          <ion-card-title class="title-food">{{p.name}}</ion-card-title>
+          <ion-card-subtitle class="text-food">Valor: <span style="color: rgb(0, 202, 0);">R{{p.price |
+              currency}}</span>
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-checkbox fill="outline" slot="end" color="primary" [(ngModel)]="checkFood[i]"
+          (click)="getAddToCart(p.price, i)">
+        </ion-checkbox>
+      </ion-item>
+
+      <ion-card-content>
+        <ion-card-subtitle class="text-description">Descrição</ion-card-subtitle>
+        <ion-label>{{p.description}}</ion-label>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>
+
+<div class="line">
+  <ion-title slot="end" class="valor-total">
+    Total: R{{valorTotal | currency}}
+  </ion-title>
+</div>
+<ion-toolbar class="tool-advance" (click)="goToCart()">
+  <ion-title routerLink="/cart" class="advance">
+    AVANÇAR
+  </ion-title>
+</ion-toolbar>

@@ -1,0 +1,75 @@
+.products:hover{
+  --background: rgb(243, 243, 243);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+  cursor: pointer;
+}
+
+.text-content{
+  font-weight: 900;
+  color: red;
+  font-family: cursive;
+}
+
+.img-food{
+  border-radius: 5px;
+  margin-right: 0px;
+  height: 5rem;
+  width: 5rem;
+}
+
+.item-food{
+  margin-top: 5px;
+}
+
+.title-food{
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.text-food{
+  font-weight: bold;
+}
+
+.text-description{
+  color: rgb(175, 175, 175);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.card-food{
+  padding: 0px;
+}
+
+.tool-advance{
+  --background: rgb(231, 62, 0);
+}
+
+.tool-advance:hover{
+  --background: rgb(218, 76, 25);
+  cursor: pointer;
+}
+
+.advance{
+  font-weight: bold; 
+  text-align: center;
+  color: black;
+}
+
+.line{
+  border-top: 1px solid rgb(187, 187, 187);
+}
+
+.valor-total{
+  font-size: 16px; 
+  font-weight: bold; 
+  margin: 10px
+}
+
+@media (prefers-color-scheme: dark) {
+  .valor-total{
+    color: white;
+  }
+}
+
+
+

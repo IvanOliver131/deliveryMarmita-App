@@ -1,0 +1,11 @@
+<app-top-bar></app-top-bar>
+
+<ion-content [fullscreen]="true" *ngIf="routeFlag === 1">
+  <ion-list>
+    <ion-card class="products" (click)="goToSelectProductMarmita(m.size)" *ngFor="let m of productMarmitaSizeLst">
+      <ion-card-content class="text-content">
+        MARMITA {{m.size}}
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>
