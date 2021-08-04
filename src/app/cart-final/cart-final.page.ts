@@ -12,7 +12,7 @@ export class CartFinalPage implements OnInit {
   valorTotal = 0;
 
   constructor(
-    private route: Router,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -24,7 +24,7 @@ export class CartFinalPage implements OnInit {
   }
 
   initPage(){
-    this.productsFinal = JSON.parse(localStorage.getItem('lstAllProducts'));
+    this.productsFinal = this.lst;
     this.valorTotal = parseInt(localStorage.getItem('valorTotal'));
   }
 
@@ -35,7 +35,7 @@ export class CartFinalPage implements OnInit {
   }
 
   goToConfirm(){
-
+    this.router.navigateByUrl('/cart-confirm');
   }
 
 }

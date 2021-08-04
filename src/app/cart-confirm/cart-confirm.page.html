@@ -5,30 +5,30 @@
     <ion-item>
       <ion-icon name="person" slot="start"></ion-icon>
       <ion-label position="floating">Nome</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="pedido.clientName"></ion-input>
     </ion-item>
   
     <ion-item>
       <ion-icon name="call" slot="start"></ion-icon>
       <ion-label position="floating">Telefone</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="number"></ion-input>
     </ion-item>
   </ion-card>
 
   <ion-card>
     <ion-list-header>
       <ion-label>
-        Single Selection
+        Forma de Pagamento / Forma de Entrega
       </ion-label>
     </ion-list-header>
   
     <ion-item>
       <ion-icon name="card" slot="start"></ion-icon>
       <ion-label>Forma de Pagamento</ion-label>
-      <ion-select placeholder="Selecione a forma de pagamento" okText="Okay" cancelText="Cancelar">
-        <ion-select-option value="f">Cartão</ion-select-option>
-        <ion-select-option value="f">Dinheiro</ion-select-option>
-        <ion-select-option value="m">Pix</ion-select-option>
+      <ion-select placeholder="Selecione a forma de pagamento" okText="Okay" cancelText="Cancelar" [(ngModule)]="pedido.payment">
+        <ion-select-option value="cartao">Cartão</ion-select-option>
+        <ion-select-option value="dinheiro">Dinheiro</ion-select-option>
+        <ion-select-option value="pix">Pix</ion-select-option>
       </ion-select>
     </ion-item>
 
@@ -36,8 +36,8 @@
       <ion-icon name="send" slot="start"></ion-icon>
       <ion-label>Forma de Entrega</ion-label>
       <ion-select placeholder="Selecione o tipo de entrega" okText="Okay" cancelText="Cancelar">
-        <ion-select-option value="brown">Retirar no Local</ion-select-option>
-        <ion-select-option value="blonde">Receber em casa</ion-select-option>
+        <ion-select-option value="local">Retirar no Local</ion-select-option>
+        <ion-select-option value="casa">Receber em casa</ion-select-option>
       </ion-select>  
     </ion-item>
   </ion-card>
@@ -51,19 +51,19 @@
 
     <ion-item>
       <ion-label position="floating">Bairro</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="pedido.addressNeighborhood"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Rua</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="pedido.addressStreet"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Nº</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="pedido.addressNumber"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Ponto de Referência</ion-label>
-      <ion-input></ion-input>
+      <ion-input [(ngModel)]="pedido.referencePoint"></ion-input>
     </ion-item>
   </ion-card>
 
