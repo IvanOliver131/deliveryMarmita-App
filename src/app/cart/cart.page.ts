@@ -17,6 +17,7 @@ export class CartPage implements OnInit {
   observation = [];
   meetOption: MeetOptions[];
   optionMeet: boolean[] = [];
+  showOption: boolean;
 
   constructor(
     private meetOptionSvc: SelectOptionService,
@@ -28,15 +29,20 @@ export class CartPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.valorTotal = parseInt(localStorage.getItem('valorTotal'));
+    this.valorTotal = +localStorage.getItem('valorTotal');
     this.allProducts = JSON.parse(localStorage.getItem('lst'));
+    console.log('Produtos', this.allProducts);
 
+    const primeiroProduto = this.allProducts[0];
+    if (primeiroProduto.type === 'marmita') {
+      this.showOption = true;
+      this.getOptions();
+    }
     this.zerarAmount();
-    this.getOptions();
   }
 
-  getOptions(){
-    this.meetOptionSvc.getOptions().subscribe(result =>{
+  getOptions() {
+    this.meetOptionSvc.getOptions().subscribe(result => {
       this.meetOption = result;
     });
   }
@@ -47,9 +53,9 @@ export class CartPage implements OnInit {
   }
 
   addItem(p) {
-    if(p.amount === undefined){
+    if (p.amount === undefined) {
       p.amount = 1;
-    }else{
+    } else {
       p.amount++;
       this.valorTotal += p.price;
     }
@@ -60,7 +66,7 @@ export class CartPage implements OnInit {
       console.log('error');
     }
     else {
-      p.amount --;
+      p.amount--;
       this.valorTotal -= p.price;
     }
   }
@@ -81,11 +87,11 @@ export class CartPage implements OnInit {
   }
 
   goToCartFinal() {
-    if(this.valorTotal === 0){
+    if (this.valorTotal === 0) {
       console.log('nao pode ir pra outra pagina');
-    }else{
-      for(let i=0; i < this.allProducts.length; i++){
-        if(this.allProducts[i].amount > 0){
+    } else {
+      for (let i = 0; i < this.allProducts.length; i++) {
+        if (this.allProducts[i].amount > 0) {
           this.products[i] = this.allProducts[i];
           this.products[i].observation = this.observation[i];
         }

@@ -9,7 +9,7 @@
       </ion-card-header>
     </ion-card>
 
-    <ion-card>
+    <ion-card *ngIf="showOption">
       <ion-item>
         <ion-label class="labels-cart">Opcionais</ion-label>
       </ion-item>
@@ -21,10 +21,10 @@
             (click)="addOption(o.price, i)"></ion-checkbox>
           </div>
         </ion-list>
-      </ion-card-header>     
+      </ion-card-header>
     </ion-card>
 
-    <ion-card>
+    <ion-card *ngIf="showOption">
       <ion-item>
         <ion-icon class="button-select" name="remove-circle" slot="end" (click)="removeItem(p)"></ion-icon>
         <ion-label>{{p.amount}}</ion-label>
@@ -40,7 +40,7 @@
       </ion-item>
     </ion-card>
   </ion-list>
-  
+
   <hr>
 </ion-content>
 

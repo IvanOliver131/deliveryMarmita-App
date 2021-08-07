@@ -67,28 +67,23 @@ export class SelectProductPage implements OnInit {
     }
   }
 
-  getAddToCart(valor, i) {
-    if (this.checkFood[i] === undefined) {
-      this.checkFood[i] = false;
+  getAddToCart(product: Product) {
+    if (!product.isChecked) {
+      this.valorTotal += product.price;
+    } else {
+      this.valorTotal -= product.price;
     }
-
-    if (this.checkFood[i] === false) {
-      this.valorTotal += valor;
-    }
-    else {
-      this.valorTotal -= valor;
-    }
-
     localStorage.valorTotal = this.valorTotal;
   }
 
   goToCart() {
-    for (let i = 0; i < this.productLst.length; i++) {
-      if (this.checkFood[i] === true) {
-        this.products.productsLst[i] = this.productLst[i];
+    this.productLst.forEach(item => {
+      if (item.isChecked === true) {
+        this.products.productsLst.push(item);
       }
-    }
+    });
     localStorage.setItem('lst', JSON.stringify(this.products.productsLst));
+    // localStorage.setItem('lst', JSON.stringify(this.products.productsLst));
   }
 
 }
