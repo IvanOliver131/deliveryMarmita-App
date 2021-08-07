@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../models/product.model';
+import { Router } from '@angular/router';
+import { MeetOptions } from '../models/meetOptions';
 import { Products } from '../models/products.model';
 import { SelectOptionService } from '../service/product/select-meetoption.service';
-import { MeetOptions } from '../models/meetOptions';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +15,6 @@ export class CartPage implements OnInit {
   allProducts = [];
   observation = [];
   meetOption: MeetOptions[];
-  optionMeet: boolean[] = [];
   showOption: boolean;
 
   constructor(
@@ -31,7 +29,6 @@ export class CartPage implements OnInit {
   ionViewWillEnter() {
     this.valorTotal = +localStorage.getItem('valorTotal');
     this.allProducts = JSON.parse(localStorage.getItem('lst'));
-    console.log('Produtos', this.allProducts);
 
     const primeiroProduto = this.allProducts[0];
     if (primeiroProduto.type === 'marmita') {
@@ -71,19 +68,22 @@ export class CartPage implements OnInit {
     }
   }
 
-  addOption(valor, i) {
-    if (this.optionMeet[i] === undefined) {
-      this.optionMeet[i] = false;
+  addOption(option: MeetOptions, index: number): void {
+    if (!option.isChecked) {
+      this.valorTotal += option.price;
+      this.meetOption[index].amount = this.meetOption[index].amount ? this.meetOption[index].amount + 1 : 1;
+    } else {
+      this.valorTotal -= option.price;
+      this.meetOption[index].amount = this.meetOption[index].amount ? this.meetOption[index].amount - 1 : 1;
     }
+  }
 
-    if (this.optionMeet[i] === false) {
-      this.valorTotal += valor;
-    }
-    else {
-      this.valorTotal -= valor;
-    }
+  sumAmountOption(option: MeetOptions): void {
+    console.log(option);
+  }
 
-    localStorage.valorTotal = this.valorTotal;
+  subtAmountOption(option: MeetOptions): void {
+    console.log(option);
   }
 
   goToCartFinal() {

@@ -1,4 +1,3 @@
-import { MeetOptions } from './meetOptions';
 import { Product } from './product.model';
 
 export class Products {

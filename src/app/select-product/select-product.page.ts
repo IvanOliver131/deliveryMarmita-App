@@ -13,20 +13,15 @@ import transformProductImageUrl from '../utils/transformImageUrl';
 })
 export class SelectProductPage implements OnInit {
   productLst: Product[];
-  products: Products;
   routeFlag = '';
   typeFlag = '';
   valorTotal = 0;
-  checkFood: boolean[] = [];
 
   constructor(
     private selectProductSvc: SelectProductService,
     public router: Router,
     public actRoute: ActivatedRoute,
-  ) {
-    this.products = new Products();
-    this.products.productsLst = new Array<Product>();
-  }
+  ) {}
 
   ngOnInit() {
 
@@ -37,6 +32,8 @@ export class SelectProductPage implements OnInit {
     this.typeFlag = this.actRoute.snapshot.paramMap.get('product-sel');
 
     this.getAllProducts(this.routeFlag, this.typeFlag);
+    localStorage.removeItem('lst');
+    localStorage.removeItem('valorTotal');
 
     this.valorTotal = 0;
   }
@@ -45,8 +42,7 @@ export class SelectProductPage implements OnInit {
     return transformProductImageUrl(imageUrl);
   }
 
-
-  getAllProducts(size, type) {
+  getAllProducts(size: string, type: string) {
     if (type === 'marmita') {
       this.selectProductSvc.getAllProductsMarmita(size).subscribe(
         result => {
@@ -73,17 +69,24 @@ export class SelectProductPage implements OnInit {
     } else {
       this.valorTotal -= product.price;
     }
-    localStorage.valorTotal = this.valorTotal;
+  }
+
+  isSelectProduct(): boolean {
+    return this.productLst.find(product => product.isChecked) ? true : false;
   }
 
   goToCart() {
+    const productsAdd: Product[] = [];
     this.productLst.forEach(item => {
       if (item.isChecked === true) {
-        this.products.productsLst.push(item);
+        productsAdd.push(item);
       }
     });
-    localStorage.setItem('lst', JSON.stringify(this.products.productsLst));
-    // localStorage.setItem('lst', JSON.stringify(this.products.productsLst));
+    if (productsAdd.length > 0) {
+      localStorage.setItem('lst', JSON.stringify(productsAdd));
+      localStorage.valorTotal = this.valorTotal;
+      this.router.navigate(['/cart']);
+    }
   }
 
 }

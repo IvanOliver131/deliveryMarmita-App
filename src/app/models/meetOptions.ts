@@ -5,4 +5,6 @@ export class MeetOptions {
     status: boolean;
     createdAt: Date;
     updatedAt: Date;
+    amount?: number = 0;
+    isChecked?: boolean = false;
 }

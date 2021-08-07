@@ -25,7 +25,7 @@ export class CartFinalPage implements OnInit {
 
   initPage(){
     this.productsFinal = JSON.parse(localStorage.getItem('lstAllProducts'));
-    this.valorTotal = parseInt(localStorage.getItem('valorTotal'));
+    this.valorTotal = +localStorage.getItem('valorTotal');
   }
 
   remove(p, i){

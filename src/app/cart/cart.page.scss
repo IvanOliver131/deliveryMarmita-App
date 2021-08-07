@@ -7,17 +7,72 @@
   cursor: pointer;
 }
 
-.advance{
-  font-weight: bold; 
+.flex-container {
+  display: flex;
+  flex-direction: row;
   text-align: center;
-  color: black;
+}
+
+.container-name {
+  display: flex;
+  flex-direction: row;
+  flex: 50%;
+}
+
+.container-checkbox {
+  display: flex;
+  flex-direction: row;
+  flex: 15%;
+}
+
+.container-quantidade {
+  display: flex;
+  flex-direction: row;
+  flex: 15%;
+}
+
+.conatiner-buttons-qtd {
+  display: flex;
+  flex-direction: row;
+  flex: 20%;
+}
+
+@media (max-width: 400px) {
+  .app-container {
+    flex-direction: column;
+  }
+}
+
+hr {
+  margin-top: 10px;
+  width: 95%;
+  height: 1px;
+  background-color: #FF6C37;
+}
+
+.amount-option {
+  padding: 0 10px 0 10px;
+}
+
+.advance{
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
 }
 
 .line{
   border-top: 1px solid rgb(187, 187, 187);
 }
 
-.button-select:hover{
+.button-add {
+  color: #28a745;
+}
+
+.button-remove {
+  color: #e35e6b;
+}
+
+.button-remove:hover, .button-add:hover{
   cursor: pointer;
 }
 
@@ -30,14 +85,14 @@
 }
 
 .label-title{
-  text-align: center; 
-  font-size: 17px; 
+  text-align: center;
+  font-size: 17px;
   font-weight: bold;
 }
 
 .valor-total{
-  font-size: 16px; 
-  font-weight: bold; 
+  font-size: 16px;
+  font-weight: bold;
   margin: 10px
 }
 
@@ -49,17 +104,17 @@
   .labels-cart{
     color: white;
   }
-  
+
   .label-option{
     color: white;
   }
 
   .label-title{
-    color: white; 
+    color: white;
   }
 
   .label-span{
-    font-weight: bold; 
+    font-weight: bold;
     color: white;
   }
 }
