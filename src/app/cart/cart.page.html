@@ -29,7 +29,7 @@
               <ion-label>{{ o.name }} - R{{ o.price | currency }}</ion-label>
             </div>
             <div class="container-checkbox">
-              <ion-checkbox fill="outline" color="primary" [(ngModel)]="o.isChecked" (click)="addOption(o, j)">
+              <ion-checkbox fill="outline" color="primary" [(ngModel)]="o.isChecked" (click)="checkedOption(o, i, j)">
               </ion-checkbox>
             </div>
             <div class="container-quantidade">

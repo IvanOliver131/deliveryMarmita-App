@@ -1,6 +1,6 @@
 import { Product } from './product.model';
 
-export class Products {
+export class Order {
     amount: number;
     observation: string;
     meet_options: string;

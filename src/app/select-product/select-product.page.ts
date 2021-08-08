@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { Product } from '../models/product.model';
-import { Products } from '../models/products.model';
 import { SelectProductService } from '../service/product/select-product.service';
 import transformProductImageUrl from '../utils/transformImageUrl';
+
 
 @Component({
   selector: 'app-select-product',

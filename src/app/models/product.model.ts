@@ -9,4 +9,10 @@ export class Product {
     image: string;
     amount: number;
     isChecked?: boolean = false;
+    meet_options?: {
+      id: number;
+      name: string;
+      price: number;
+      amountOption: number;
+    }[];
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MeetOptions } from '../models/meetOptions';
-import { Products } from '../models/products.model';
+import { Product } from '../models/product.model';
+import { Order } from '../models/order.model';
 import { SelectOptionService } from '../service/product/select-meetoption.service';
 
 @Component({
@@ -10,9 +11,9 @@ import { SelectOptionService } from '../service/product/select-meetoption.servic
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  products: Products[] = [];
+  order: Order[] = [];
   valorTotal = 0;
-  allProducts = [];
+  allProducts: Product[] = [];
   observation = [];
   meetOption: MeetOptions[];
   showOption: boolean;
@@ -20,8 +21,7 @@ export class CartPage implements OnInit {
   constructor(
     private meetOptionSvc: SelectOptionService,
     public router: Router
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
   }
@@ -30,12 +30,17 @@ export class CartPage implements OnInit {
     this.valorTotal = +localStorage.getItem('valorTotal');
     this.allProducts = JSON.parse(localStorage.getItem('lst'));
 
+    this.allProducts.forEach(item => {
+      item.meet_options = [];
+      item.amount = 1;
+    });
+    console.log('All Products', this.allProducts);
+
     const primeiroProduto = this.allProducts[0];
     if (primeiroProduto.type === 'marmita') {
       this.showOption = true;
       this.getOptions();
     }
-    this.zerarAmount();
   }
 
   getOptions() {
@@ -43,39 +48,41 @@ export class CartPage implements OnInit {
       this.meetOption = result;
     });
   }
-  zerarAmount() {
-    this.allProducts.forEach((p) => {
-      p.amount = 1;
-    });
+
+  addItem(product: Product) {
+    product.amount++;
+    this.valorTotal += product.price;
   }
 
-  addItem(p) {
-    if (p.amount === undefined) {
-      p.amount = 1;
-    } else {
-      p.amount++;
-      this.valorTotal += p.price;
+  removeItem(product: Product) {
+    if (product.amount > 1) {
+      product.amount--;
+      this.valorTotal -= product.price;
     }
   }
 
-  removeItem(p) {
-    if (p.amount === 0 || p.amount === null) {
-      console.log('error');
-    }
-    else {
-      p.amount--;
-      this.valorTotal -= p.price;
-    }
-  }
 
-  addOption(option: MeetOptions, index: number): void {
+  checkedOption(option: MeetOptions, indexProd: number, indexOpt: number): void {
     if (!option.isChecked) {
       this.valorTotal += option.price;
-      this.meetOption[index].amount = this.meetOption[index].amount ? this.meetOption[index].amount + 1 : 1;
+
+      this.allProducts[indexProd].meet_options.push({
+        id: option.id,
+        name: option.name,
+        price: option.price,
+        amountOption: 1
+      });
+
+      this.meetOption[indexOpt].amount = 1;
     } else {
       this.valorTotal -= option.price;
-      this.meetOption[index].amount = this.meetOption[index].amount ? this.meetOption[index].amount - 1 : 1;
+
+      const index = this.allProducts[indexProd].meet_options.findIndex(item => item.id === option.id);
+      this.allProducts[indexProd].meet_options.splice(index, 1);
+
+      this.meetOption[indexOpt].amount -= 1;
     }
+    console.log('AllProducts - após checked', this.allProducts);
   }
 
   sumAmountOption(option: MeetOptions): void {
@@ -87,17 +94,18 @@ export class CartPage implements OnInit {
   }
 
   goToCartFinal() {
-    if (this.valorTotal === 0) {
-      console.log('nao pode ir pra outra pagina');
-    } else {
-      for (let i = 0; i < this.allProducts.length; i++) {
-        if (this.allProducts[i].amount > 0) {
-          this.products[i] = this.allProducts[i];
-          this.products[i].observation = this.observation[i];
-        }
-      }
-      localStorage.setItem('lstAllProducts', JSON.stringify(this.products));
-      this.router.navigateByUrl('/cart-final');
-    }
+    // if (this.valorTotal === 0) {
+    //   console.log('nao pode ir pra outra pagina');
+    // } else {
+    //   for (let i = 0; i < this.allProducts.length; i++) {
+    //     if (this.allProducts[i].amount > 0) {
+    //       this.order[i] = this.allProducts[i];
+    //       this.order[i].observation = this.observation[i];
+    //     }
+    //   }
+    //   localStorage.setItem('lstAllProducts', JSON.stringify(this.order));
+    //   this.router.navigateByUrl('/cart-final');
+    // }
+    console.log('Final');
   }
 }
