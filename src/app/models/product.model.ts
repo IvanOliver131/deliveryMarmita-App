@@ -8,4 +8,5 @@ export class Product {
     status: boolean;
     image: string;
     amount: number;
+    isChecked?: boolean = false;
 }

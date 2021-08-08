@@ -13,20 +13,15 @@ import transformProductImageUrl from '../utils/transformImageUrl';
 })
 export class SelectProductPage implements OnInit {
   productLst: Product[];
-  products: Products;
   routeFlag = '';
   typeFlag = '';
   valorTotal = 0;
-  checkFood: boolean[] = [];
 
   constructor(
     private selectProductSvc: SelectProductService,
     public router: Router,
     public actRoute: ActivatedRoute,
-  ) {
-    this.products = new Products();
-    this.products.productsLst = new Array<Product>();
-  }
+  ) {}
 
   ngOnInit() {
 
@@ -37,6 +32,8 @@ export class SelectProductPage implements OnInit {
     this.typeFlag = this.actRoute.snapshot.paramMap.get('product-sel');
 
     this.getAllProducts(this.routeFlag, this.typeFlag);
+    localStorage.removeItem('lst');
+    localStorage.removeItem('valorTotal');
 
     this.valorTotal = 0;
   }
@@ -45,8 +42,7 @@ export class SelectProductPage implements OnInit {
     return transformProductImageUrl(imageUrl);
   }
 
-
-  getAllProducts(size, type) {
+  getAllProducts(size: string, type: string) {
     if (type === 'marmita') {
       this.selectProductSvc.getAllProductsMarmita(size).subscribe(
         result => {
@@ -67,28 +63,30 @@ export class SelectProductPage implements OnInit {
     }
   }
 
-  getAddToCart(valor, i) {
-    if (this.checkFood[i] === undefined) {
-      this.checkFood[i] = false;
+  getAddToCart(product: Product) {
+    if (!product.isChecked) {
+      this.valorTotal += product.price;
+    } else {
+      this.valorTotal -= product.price;
     }
+  }
 
-    if (this.checkFood[i] === false) {
-      this.valorTotal += valor;
-    }
-    else {
-      this.valorTotal -= valor;
-    }
-
-    localStorage.valorTotal = this.valorTotal;
+  isSelectProduct(): boolean {
+    return this.productLst.find(product => product.isChecked) ? true : false;
   }
 
   goToCart() {
-    for (let i = 0; i < this.productLst.length; i++) {
-      if (this.checkFood[i] === true) {
-        this.products.productsLst[i] = this.productLst[i];
+    const productsAdd: Product[] = [];
+    this.productLst.forEach(item => {
+      if (item.isChecked === true) {
+        productsAdd.push(item);
       }
+    });
+    if (productsAdd.length > 0) {
+      localStorage.setItem('lst', JSON.stringify(productsAdd));
+      localStorage.valorTotal = this.valorTotal;
+      this.router.navigate(['/cart']);
     }
-    localStorage.setItem('lst', JSON.stringify(this.products.productsLst));
   }
 
 }

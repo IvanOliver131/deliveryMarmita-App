@@ -1,4 +1,3 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../models/product.model';
@@ -22,8 +21,8 @@ export class ProductPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.routeFlag = parseInt(this.actRoute.snapshot.paramMap.get("pid"));
-    if (this.routeFlag == 1) {
+    this.routeFlag = +this.actRoute.snapshot.paramMap.get('pid');
+    if (this.routeFlag === 1) {
       this.getMarmitaSize();
     }
   }
@@ -31,13 +30,13 @@ export class ProductPage implements OnInit {
   /****************  GET ALL MARMITAS SIZE  ****************/
   getMarmitaSize() {
     this.getSizeSvc.getAllSize().subscribe(result => {
-      this.productMarmitaSizeLst = result
-    })
+      this.productMarmitaSizeLst = result;
+    });
   }
 
   /******************* ROTAS MARMITAS ******************/
-  goToSelectProductMarmita(size) {
-    this.router.navigateByUrl('select-product/marmita/' + size)
+  goToSelectProductMarmita(size: string) {
+    this.router.navigateByUrl('select-product/marmita/' + size);
   }
 
 }
