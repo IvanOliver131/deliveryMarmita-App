@@ -1,9 +1,18 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MeetOptions } from '../models/meetOptions';
 import { Product } from '../models/product.model';
-import { Order } from '../models/order.model';
+import { OrderProduct } from '../models/orderProduct.model';
 import { SelectOptionService } from '../service/product/select-meetoption.service';
+
+interface IMeetOption {
+  id: number;
+  name: string;
+  price: number;
+  amountOption: number;
+  isChecked: boolean;
+}
 
 @Component({
   selector: 'app-cart',
@@ -11,12 +20,12 @@ import { SelectOptionService } from '../service/product/select-meetoption.servic
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  order: Order[] = [];
+  order: OrderProduct[] = [];
   valorTotal = 0;
   allProducts: Product[] = [];
   observation = [];
-  meetOption: MeetOptions[];
-  showOption: boolean;
+  meetOption: MeetOptions[] = [];
+  isBebida: boolean;
 
   constructor(
     private meetOptionSvc: SelectOptionService,
@@ -24,23 +33,35 @@ export class CartPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.allProducts = JSON.parse(localStorage.getItem('lst'));
+    const primeiroProduto = this.allProducts[0];
+
+    if (primeiroProduto.type === 'marmita') {
+      this.getOptions();
+      this.isBebida = true;
+    }
   }
 
   ionViewWillEnter() {
     this.valorTotal = +localStorage.getItem('valorTotal');
-    this.allProducts = JSON.parse(localStorage.getItem('lst'));
 
-    this.allProducts.forEach(item => {
-      item.meet_options = [];
-      item.amount = 1;
-    });
-    console.log('All Products', this.allProducts);
-
-    const primeiroProduto = this.allProducts[0];
-    if (primeiroProduto.type === 'marmita') {
-      this.showOption = true;
-      this.getOptions();
+    if (this.isBebida) {
+      this.allProducts.forEach(marmita => {
+        this.meetOption.forEach(opt => {
+          marmita.meet_options.push({
+            id: opt.id,
+            name: opt.name,
+            price: opt.price,
+            amountOption: 0,
+            isChecked: false,
+          });
+        });
+        marmita.amount = 1;
+      });
+    } else {
+      this.allProducts.forEach(bebida => bebida.amount = 1);
     }
+
   }
 
   getOptions() {
@@ -61,51 +82,89 @@ export class CartPage implements OnInit {
     }
   }
 
-
-  checkedOption(option: MeetOptions, indexProd: number, indexOpt: number): void {
+  checkedOption(option: IMeetOption): void {
     if (!option.isChecked) {
       this.valorTotal += option.price;
-
-      this.allProducts[indexProd].meet_options.push({
-        id: option.id,
-        name: option.name,
-        price: option.price,
-        amountOption: 1
-      });
-
-      this.meetOption[indexOpt].amount = 1;
+      option.amountOption = 1;
     } else {
-      this.valorTotal -= option.price;
-
-      const index = this.allProducts[indexProd].meet_options.findIndex(item => item.id === option.id);
-      this.allProducts[indexProd].meet_options.splice(index, 1);
-
-      this.meetOption[indexOpt].amount -= 1;
+      this.valorTotal -= (option.price * option.amountOption);
+      option.amountOption = 0;
     }
-    console.log('AllProducts - após checked', this.allProducts);
   }
 
-  sumAmountOption(option: MeetOptions): void {
-    console.log(option);
+  sumAmountOption(option: IMeetOption): void {
+    if (option.isChecked === true) {
+      this.valorTotal += option.price;
+      option.amountOption += 1;
+    }
   }
 
-  subtAmountOption(option: MeetOptions): void {
-    console.log(option);
+  subtAmountOption(option: IMeetOption): void {
+    if (option.amountOption > 1) {
+      this.valorTotal -= option.price;
+      option.amountOption -= 1;
+    }
   }
 
   goToCartFinal() {
-    // if (this.valorTotal === 0) {
-    //   console.log('nao pode ir pra outra pagina');
-    // } else {
-    //   for (let i = 0; i < this.allProducts.length; i++) {
-    //     if (this.allProducts[i].amount > 0) {
-    //       this.order[i] = this.allProducts[i];
-    //       this.order[i].observation = this.observation[i];
-    //     }
-    //   }
-    //   localStorage.setItem('lstAllProducts', JSON.stringify(this.order));
-    //   this.router.navigateByUrl('/cart-final');
-    // }
-    console.log('Final');
+    const carrinhoCheio = JSON.parse(localStorage.getItem('lstAllProducts'));
+    const orderProduct: OrderProduct[] = [];
+
+    this.allProducts.forEach(product => {
+      if (product.type === 'marmita') {
+
+        let totalOption = 0;
+        let montaString = '';
+        product.meet_options.forEach(opt => {
+          if (opt.isChecked === true) {
+            if (montaString === '') {
+              montaString = `${opt.amountOption} ${opt.name}`;
+            } else {
+              montaString += `, ${opt.amountOption} ${opt.name}`;
+            }
+            totalOption += opt.amountOption * opt.price;
+          }
+        });
+
+        orderProduct.push({
+          amount: product.amount,
+          observation: product.observation,
+          meet_options: montaString !== '' ? montaString : '',
+          total_item: totalOption + product.price * product.amount,
+          order: null,
+          product: product.id,
+        });
+
+      } else {
+        orderProduct.push({
+          amount: product.amount,
+          total_item: product.price * product.amount,
+          order: null,
+          product: product.id
+        });
+      }
+    });
+
+    if (!carrinhoCheio) {
+      localStorage.setItem('lstAllProducts', JSON.stringify({
+        client_name: null,
+        phone: null,
+        cep: null,
+        address_street: null,
+        address_number: null,
+        address_neighborhood: null,
+        address_city: null,
+        cost_freight: null,
+        status: null,
+        payment: null,
+        withdrawal: null,
+        reference_point: null,
+        change_of_money: null,
+        total: null,
+        products: orderProduct,
+      }));
+    }
+
+    // this.router.navigateByUrl('/cart-final');
   }
 }

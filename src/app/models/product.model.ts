@@ -7,12 +7,14 @@ export class Product {
     description: string;
     status: boolean;
     image: string;
-    amount: number;
+    amount?: number;
+    observation?: string;
     isChecked?: boolean = false;
     meet_options?: {
       id: number;
       name: string;
       price: number;
       amountOption: number;
+      isChecked: boolean;
     }[];
 }

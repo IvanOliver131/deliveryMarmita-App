@@ -1,56 +1,56 @@
 <app-top-bar></app-top-bar>
 
 <ion-content>
-  <ion-list *ngFor="let p of allProducts, let i = index">
+  <ion-list *ngFor="let product of allProducts, let i = index">
     <ion-card>
-      <ion-title class="label-title">{{p.name}}</ion-title>
+      <ion-title class="label-title">{{product.name}}</ion-title>
       <ion-card-header>
-        <ion-card-subtitle><span class="label-span">Valor:</span> R{{p.price | currency}}</ion-card-subtitle>
+        <ion-card-subtitle><span class="label-span">Valor:</span> R{{product.price | currency}}</ion-card-subtitle>
       </ion-card-header>
     </ion-card>
 
     <ion-card>
       <ion-item>
-        <ion-icon class="button-remove" name="remove-circle" slot="end" (click)="removeItem(p)"></ion-icon>
-        <ion-label>{{p.amount}}</ion-label>
-        <ion-icon class="button-add" name="add-circle" slot="end" (click)="addItem(p)"></ion-icon>
+        <ion-icon class="button-remove" name="remove-circle" slot="end" (click)="removeItem(product)"></ion-icon>
+        <ion-label>{{product.amount}}</ion-label>
+        <ion-icon class="button-add" name="add-circle" slot="end" (click)="addItem(product)"></ion-icon>
         <ion-label slot="start" class="labels-cart">Quantidade</ion-label>
       </ion-item>
     </ion-card>
 
-    <ion-card *ngIf="showOption">
+    <ion-card *ngIf="isBebida">
       <ion-item>
         <ion-label class="labels-cart">Opcionais</ion-label>
       </ion-item>
       <ion-card-header>
-        <ion-list *ngFor="let o of meetOption, let j = index">
+        <ion-list *ngFor="let option of product.meet_options, let j = index">
           <div class="flex-container">
             <div class="container-name">
-              <ion-label>{{ o.name }} - R{{ o.price | currency }}</ion-label>
+              <ion-label>{{ option.name }} - R{{ option.price | currency }}</ion-label>
             </div>
             <div class="container-checkbox">
-              <ion-checkbox fill="outline" color="primary" [(ngModel)]="o.isChecked" (click)="checkedOption(o, i, j)">
+              <ion-checkbox fill="outline" color="primary" [(ngModel)]="option.isChecked" (click)="checkedOption(option)">
               </ion-checkbox>
             </div>
             <div class="container-quantidade">
               <ion-label slot="start" class="labels-cart">Qtd</ion-label>
             </div>
             <div class="conatiner-buttons-qtd">
-              <ion-icon class="button-remove" name="remove-circle" slot="end" (click)="sumAmountOption(o)"></ion-icon>
-              <ion-label class="amount-option">{{o.amount ? o.amount : 0}}</ion-label>
-              <ion-icon class="button-add" name="add-circle" slot="end" (click)="subtAmountOption(o)"></ion-icon>
+              <ion-icon class="button-remove" name="remove-circle" slot="end" (click)="subtAmountOption(option)"></ion-icon>
+              <ion-label class="amount-option">{{option.amountOption}}</ion-label>
+              <ion-icon class="button-add" name="add-circle" slot="end" (click)="sumAmountOption(option)"></ion-icon>
             </div>
           </div>
         </ion-list>
       </ion-card-header>
     </ion-card>
 
-    <ion-card>
+    <ion-card *ngIf="isBebida">
       <ion-item>
         <ion-label position="floating" class="labels-cart">
           Observações
         </ion-label>
-        <ion-textarea style="padding: 5px;" [(ngModel)]="observation[i]"></ion-textarea>
+        <ion-textarea style="padding: 5px;" [(ngModel)]="product.observation"></ion-textarea>
       </ion-item>
     </ion-card>
 

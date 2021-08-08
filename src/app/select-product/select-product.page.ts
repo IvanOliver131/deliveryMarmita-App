@@ -22,9 +22,7 @@ export class SelectProductPage implements OnInit {
     public actRoute: ActivatedRoute,
   ) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     this.routeFlag = this.actRoute.snapshot.paramMap.get('sizeid');
@@ -82,6 +80,7 @@ export class SelectProductPage implements OnInit {
       }
     });
     if (productsAdd.length > 0) {
+      productsAdd.forEach(item => item.meet_options = []);
       localStorage.setItem('lst', JSON.stringify(productsAdd));
       localStorage.valorTotal = this.valorTotal;
       this.router.navigate(['/cart']);
