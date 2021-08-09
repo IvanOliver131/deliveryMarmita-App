@@ -167,6 +167,7 @@ export class CartPage implements OnInit {
 
     localStorage.valorTotal = this.valorTotal;
     localStorage.setItem('lst', JSON.stringify(this.allProducts));
+    console.log('chegou');
     this.router.navigateByUrl('/cart-final');
   }
 }

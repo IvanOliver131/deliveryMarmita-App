@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-export interface IOrder {
+export class IOrder {
   client_name: string;
   phone: string;
   cep: string;

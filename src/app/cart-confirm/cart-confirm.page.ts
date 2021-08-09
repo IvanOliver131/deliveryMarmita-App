@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Pedido } from '../models/pedido.model';
-
+import { IOrder } from '../models/order.model';
+import { OrderService } from '../service/order/order.service';
 
 @Component({
   selector: 'app-cart-confirm',
@@ -8,13 +8,36 @@ import { Pedido } from '../models/pedido.model';
   styleUrls: ['./cart-confirm.page.scss'],
 })
 export class CartConfirmPage implements OnInit {
-  pedido: Pedido;
+  order: IOrder = new IOrder();
+  valorTotal = 0;
+  ceps: any = [];
 
-  constructor() {
-    this.pedido = new Pedido();
+  constructor(
+    private orderSvc: OrderService,
+  ) {
   }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.valorTotal = +localStorage.getItem('valorTotal');
+    this.order = JSON.parse(localStorage.getItem('lstAllProducts'));
+
+    this.getCep();
+  }
+
+  getCep(){
+    this.orderSvc.getCep().subscribe(result => {
+      this.ceps = result;
+    });
+    console.log(this.ceps);
+  }
+
+  createOrder(){
+    this.order.status = 'inicializado';
+    this.orderSvc.createOrder(this.order).subscribe();
+    console.log(this.order);
   }
 
 }
