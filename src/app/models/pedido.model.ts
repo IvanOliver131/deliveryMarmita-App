@@ -1,4 +1,4 @@
-import { Products } from './products.model';
+//import { Products } from './products.model';
 
 export class Pedido {
     clientName: string;
@@ -15,6 +15,6 @@ export class Pedido {
 	referencePoint: string;
 	changeOfMoney: number;
 	total: number;
-	products: Products[];
+	//products: Products[];
 
 }

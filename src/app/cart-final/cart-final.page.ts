@@ -19,22 +19,28 @@ export class CartFinalPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.lst = JSON.parse(localStorage.getItem('lstAllProducts'));
     this.initPage();
   }
 
   initPage(){
-    this.productsFinal = JSON.parse(localStorage.getItem('lstAllProducts'));
+    this.lst = JSON.parse(localStorage.getItem('lstAllProducts'));
+    this.productsFinal = JSON.parse(localStorage.getItem('lst'));
     this.valorTotal = +localStorage.getItem('valorTotal');
+
+    this.productsFinal.forEach(p =>{
+      p.price = p.price*p.amount;
+    });
   }
 
   remove(p, i){
-    this.productsFinal.splice(p, i);
+    this.productsFinal.splice(i, i+1);
     console.log(i);
-    console.log(this.productsFinal);
+    console.log(p);
+    this.valorTotal -= p.price;
   }
 
   goToConfirm(){
+    localStorage.valorTotal = this.valorTotal;
     this.router.navigateByUrl('/cart-confirm');
   }
 

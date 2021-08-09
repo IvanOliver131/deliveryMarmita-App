@@ -165,6 +165,8 @@ export class CartPage implements OnInit {
       }));
     }
 
-    // this.router.navigateByUrl('/cart-final');
+    localStorage.valorTotal = this.valorTotal;
+    localStorage.setItem('lst', JSON.stringify(this.allProducts));
+    this.router.navigateByUrl('/cart-final');
   }
 }
