@@ -45,7 +45,7 @@
   <ion-card *ngIf="order.payment === 'dinheiro'">
     <ion-item >
       <ion-label position="floating">Troco para...</ion-label>
-      <ion-input [(ngModel)]="order.change_of_money" text="number">{{order.change_of_money}}</ion-input>
+      <ion-input [(ngModel)]="order.change_of_money" text="number"></ion-input>
     </ion-item>
   </ion-card>
 
@@ -57,28 +57,24 @@
     </ion-list-header>
 
     <ion-item>
-      <ion-label position="floating">CEP</ion-label>
+      <ion-label position="floating">CEP*</ion-label>
       <ion-input [(ngModel)]="order.cep" mask="00000-000"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Cidade</ion-label>
+      <ion-label position="floating">Cidade*</ion-label>
       <ion-input [(ngModel)]="order.address_city"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Bairro</ion-label>
+      <ion-label position="floating">Bairro*</ion-label>
       <ion-input [(ngModel)]="order.address_neighborhood"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Bairro</ion-label>
-      <ion-input [(ngModel)]="order.address_neighborhood"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Rua</ion-label>
+      <ion-label position="floating">Rua*</ion-label>
       <ion-input [(ngModel)]="order.address_street"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Nº</ion-label>
-      <ion-input [(ngModel)]="order.address_number"></ion-input>
+      <ion-label position="floating">Nº*</ion-label>
+      <ion-input [(ngModel)]="order.address_number" type="number"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Ponto de Referência</ion-label>

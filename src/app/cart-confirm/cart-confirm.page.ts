@@ -23,7 +23,7 @@ export class CartConfirmPage implements OnInit {
   ionViewWillEnter() {
     this.valorTotal = +localStorage.getItem('valorTotal');
     this.order = JSON.parse(localStorage.getItem('lstAllProducts'));
-
+    this.order.change_of_money = 0;
     this.getCep();
   }
 
@@ -31,13 +31,45 @@ export class CartConfirmPage implements OnInit {
     this.orderSvc.getCep().subscribe(result => {
       this.ceps = result;
     });
-    console.log(this.ceps);
   }
 
   createOrder(){
-    this.order.status = 'inicializado';
-    this.orderSvc.createOrder(this.order).subscribe();
-    console.log(this.order);
+    if(this.order.client_name === null){
+      console.log('erro');
+    }
+    else if(this.order.phone === null){
+      console.log('erro');
+    }
+    else if( this.order.payment === 'dinheiro'){
+      if(this.order.change_of_money < this.valorTotal || this.order.change_of_money === 0){
+        console.log('erro');
+      }
+    }
+    else if(this.order.payment === null){
+      console.log('erro');
+    }
+    else if(this.order.withdrawal === null){
+      console.log('erro');
+    }
+    else if(this.order.withdrawal === 'casa'){
+      if(this.order.address_city === null || this.order.address_neighborhood === null ||
+        this.order.address_number === null || this.order.address_street === null || this.order.cep === null){
+        console.log('erro');
+      }
+      else{
+        this.order.change_of_money = this.order.change_of_money - this.valorTotal;
+        this.order.cost_freight = 5;
+        this.order.total = this.valorTotal + this.order.cost_freight;
+        this.order.status = 'inicializado';
+        this.orderSvc.createOrder(this.order).subscribe();
+      }
+    }else{
+      this.order.change_of_money = this.order.change_of_money - this.valorTotal;
+      this.order.cost_freight = 5;
+      this.order.total = this.valorTotal + this.order.cost_freight;
+      this.order.status = 'inicializado';
+      this.orderSvc.createOrder(this.order).subscribe();
+    }
   }
 
 }

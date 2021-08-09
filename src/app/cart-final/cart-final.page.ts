@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class CartFinalPage implements OnInit {
   productsFinal = [];
   lst = [];
+  lst2 = [];
   valorTotal = 0;
 
   constructor(
@@ -24,18 +25,22 @@ export class CartFinalPage implements OnInit {
 
   initPage(){
     this.lst = JSON.parse(localStorage.getItem('lstAllProducts'));
-    this.productsFinal = JSON.parse(localStorage.getItem('lst'));
-    this.valorTotal = +localStorage.getItem('valorTotal');
+    this.lst2 = JSON.parse(localStorage.getItem('lst'));
+    this.valorTotal += JSON.parse(localStorage.getItem('valorTotal'));
+
+    this.lst2.forEach((p) =>{
+      this.productsFinal.push(p);
+    });
 
     this.productsFinal.forEach(p =>{
       p.price = p.price*p.amount;
     });
+
+    console.log(this.productsFinal);
   }
 
   remove(p, i){
     this.productsFinal.splice(i, i+1);
-    console.log(i);
-    console.log(p);
     this.valorTotal -= p.price;
   }
 
