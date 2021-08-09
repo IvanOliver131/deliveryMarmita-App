@@ -1,8 +1,18 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MeetOptions } from '../models/meetOptions';
-import { Products } from '../models/products.model';
+import { Product } from '../models/product.model';
+import { OrderProduct } from '../models/orderProduct.model';
 import { SelectOptionService } from '../service/product/select-meetoption.service';
+
+interface IMeetOption {
+  id: number;
+  name: string;
+  price: number;
+  amountOption: number;
+  isChecked: boolean;
+}
 
 @Component({
   selector: 'app-cart',
@@ -10,32 +20,48 @@ import { SelectOptionService } from '../service/product/select-meetoption.servic
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  products: Products[] = [];
+  order: OrderProduct[] = [];
   valorTotal = 0;
-  allProducts = [];
+  allProducts: Product[] = [];
   observation = [];
-  meetOption: MeetOptions[];
-  showOption: boolean;
+  meetOption: MeetOptions[] = [];
+  isBebida: boolean;
 
   constructor(
     private meetOptionSvc: SelectOptionService,
     public router: Router
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
+    this.allProducts = JSON.parse(localStorage.getItem('lst'));
+    const primeiroProduto = this.allProducts[0];
+
+    if (primeiroProduto.type === 'marmita') {
+      this.getOptions();
+      this.isBebida = true;
+    }
   }
 
   ionViewWillEnter() {
     this.valorTotal = +localStorage.getItem('valorTotal');
-    this.allProducts = JSON.parse(localStorage.getItem('lst'));
 
-    const primeiroProduto = this.allProducts[0];
-    if (primeiroProduto.type === 'marmita') {
-      this.showOption = true;
-      this.getOptions();
+    if (this.isBebida) {
+      this.allProducts.forEach(marmita => {
+        this.meetOption.forEach(opt => {
+          marmita.meet_options.push({
+            id: opt.id,
+            name: opt.name,
+            price: opt.price,
+            amountOption: 0,
+            isChecked: false,
+          });
+        });
+        marmita.amount = 1;
+      });
+    } else {
+      this.allProducts.forEach(bebida => bebida.amount = 1);
     }
-    this.zerarAmount();
+
   }
 
   getOptions() {
@@ -43,61 +69,102 @@ export class CartPage implements OnInit {
       this.meetOption = result;
     });
   }
-  zerarAmount() {
-    this.allProducts.forEach((p) => {
-      p.amount = 1;
-    });
+
+  addItem(product: Product) {
+    product.amount++;
+    this.valorTotal += product.price;
   }
 
-  addItem(p) {
-    if (p.amount === undefined) {
-      p.amount = 1;
-    } else {
-      p.amount++;
-      this.valorTotal += p.price;
+  removeItem(product: Product) {
+    if (product.amount > 1) {
+      product.amount--;
+      this.valorTotal -= product.price;
     }
   }
 
-  removeItem(p) {
-    if (p.amount === 0 || p.amount === null) {
-      console.log('error');
-    }
-    else {
-      p.amount--;
-      this.valorTotal -= p.price;
-    }
-  }
-
-  addOption(option: MeetOptions, index: number): void {
+  checkedOption(option: IMeetOption): void {
     if (!option.isChecked) {
       this.valorTotal += option.price;
-      this.meetOption[index].amount = this.meetOption[index].amount ? this.meetOption[index].amount + 1 : 1;
+      option.amountOption = 1;
     } else {
-      this.valorTotal -= option.price;
-      this.meetOption[index].amount = this.meetOption[index].amount ? this.meetOption[index].amount - 1 : 1;
+      this.valorTotal -= (option.price * option.amountOption);
+      option.amountOption = 0;
     }
   }
 
-  sumAmountOption(option: MeetOptions): void {
-    console.log(option);
+  sumAmountOption(option: IMeetOption): void {
+    if (option.isChecked === true) {
+      this.valorTotal += option.price;
+      option.amountOption += 1;
+    }
   }
 
-  subtAmountOption(option: MeetOptions): void {
-    console.log(option);
+  subtAmountOption(option: IMeetOption): void {
+    if (option.amountOption > 1) {
+      this.valorTotal -= option.price;
+      option.amountOption -= 1;
+    }
   }
 
   goToCartFinal() {
-    if (this.valorTotal === 0) {
-      console.log('nao pode ir pra outra pagina');
-    } else {
-      for (let i = 0; i < this.allProducts.length; i++) {
-        if (this.allProducts[i].amount > 0) {
-          this.products[i] = this.allProducts[i];
-          this.products[i].observation = this.observation[i];
-        }
+    const carrinhoCheio = JSON.parse(localStorage.getItem('lstAllProducts'));
+    const orderProduct: OrderProduct[] = [];
+
+    this.allProducts.forEach(product => {
+      if (product.type === 'marmita') {
+
+        let totalOption = 0;
+        let montaString = '';
+        product.meet_options.forEach(opt => {
+          if (opt.isChecked === true) {
+            if (montaString === '') {
+              montaString = `${opt.amountOption} ${opt.name}`;
+            } else {
+              montaString += `, ${opt.amountOption} ${opt.name}`;
+            }
+            totalOption += opt.amountOption * opt.price;
+          }
+        });
+
+        orderProduct.push({
+          amount: product.amount,
+          observation: product.observation,
+          meet_options: montaString !== '' ? montaString : '',
+          total_item: totalOption + product.price * product.amount,
+          order: null,
+          product: product.id,
+        });
+
+      } else {
+        orderProduct.push({
+          amount: product.amount,
+          total_item: product.price * product.amount,
+          order: null,
+          product: product.id
+        });
       }
-      localStorage.setItem('lstAllProducts', JSON.stringify(this.products));
-      this.router.navigateByUrl('/cart-final');
+    });
+
+    if (!carrinhoCheio) {
+      localStorage.setItem('lstAllProducts', JSON.stringify({
+        client_name: null,
+        phone: null,
+        cep: null,
+        address_street: null,
+        address_number: null,
+        address_neighborhood: null,
+        address_city: null,
+        cost_freight: null,
+        status: null,
+        payment: null,
+        withdrawal: null,
+        reference_point: null,
+        change_of_money: null,
+        total: null,
+        products: orderProduct,
+      }));
     }
+
+    // this.router.navigateByUrl('/cart-final');
   }
 }
