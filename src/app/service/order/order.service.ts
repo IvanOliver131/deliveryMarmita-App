@@ -17,7 +17,24 @@ export class OrderService {
     constructor(private http: HttpClient) { }
 
     createOrder(order: IOrder): Observable <IOrder>{
-      return this.http.post<IOrder>(`${this.baseURLOrder}`, order);
+      const IOrder = {
+        client_name: order.client_name,
+        phone: order.phone,
+        cep: order.cep,
+        address_street: order.address_city,
+        address_number: order.address_number,
+        address_neighborhood: order.address_neighborhood,
+        address_city: order.address_city,
+        cost_freight: order.cost_freight,
+        status: order.status,
+        payment: order.payment,
+        withdrawal: order.withdrawal,
+        reference_point: order.reference_point,
+        change_of_money: order.change_of_money,
+        total: order.total,
+        products: order.products
+      };
+      return this.http.post<IOrder>(`${this.baseURLOrder}`, IOrder);
     }
 
     getCep(){

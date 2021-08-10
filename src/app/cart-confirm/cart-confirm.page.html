@@ -36,8 +36,8 @@
       <ion-icon name="send" slot="start"></ion-icon>
       <ion-label>Forma de Entrega</ion-label>
       <ion-select placeholder="Selecione o tipo de entrega" okText="Okay" cancelText="Cancelar" [(ngModel)]="order.withdrawal">
-        <ion-select-option value="local">Retirar no Local</ion-select-option>
-        <ion-select-option value="casa">Receber em casa</ion-select-option>
+        <!-- <ion-select-option value="local">Retirar no Local</ion-select-option> -->
+        <ion-select-option value="local">Receber em casa</ion-select-option> 
       </ion-select>  
     </ion-item>
   </ion-card>
@@ -49,7 +49,7 @@
     </ion-item>
   </ion-card>
 
-  <ion-card *ngIf="order.withdrawal === 'casa'">
+  <ion-card *ngIf="order.withdrawal === 'local'">
     <ion-list-header>
       <ion-label style="text-align: center; font-weight: bold;">
         NO MEU ENDEREÇO
@@ -82,7 +82,7 @@
     </ion-item>
   </ion-card>
 
-  <ion-card *ngIf="order.withdrawal === 'casa'">
+  <ion-card *ngIf="order.withdrawal === 'local'">
     <ion-list-header>
       <ion-label style="font-weight: bold;">
         Frete: R{{order.cost_freight | currency}}

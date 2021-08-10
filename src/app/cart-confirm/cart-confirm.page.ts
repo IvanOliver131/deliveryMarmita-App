@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IOrder } from '../models/order.model';
 import { OrderService } from '../service/order/order.service';
 
@@ -14,6 +15,7 @@ export class CartConfirmPage implements OnInit {
 
   constructor(
     private orderSvc: OrderService,
+    private router: Router
   ) {
   }
 
@@ -50,72 +52,90 @@ export class CartConfirmPage implements OnInit {
       if(this.order.change_of_money < this.valorTotal || this.order.change_of_money === 0){
         console.log('erro, o valor do troco e menor do que o valor total');
       }
-      else if(this.order.withdrawal === 'casa'){
+      else if(this.order.withdrawal === 'local'){
         if(this.order.address_city === null || this.order.address_neighborhood === null ||
           this.order.address_number === null || this.order.address_street === null || this.order.cep === null){
           console.log('erro');
         }
         else{
+          if(this.order.reference_point === null){
+            this.order.reference_point = '';
+          }
           this.order.change_of_money = this.order.change_of_money - this.valorTotal;
           this.order.cost_freight = 5;
           this.order.total = this.valorTotal + this.order.cost_freight;
           this.order.status = 'inicializado';
           this.orderSvc.createOrder(this.order).subscribe();
-          console.log(this.order);
+          localStorage.clear();
+          this.router.navigateByUrl('/home');
         }
-      }else if(this.order.withdrawal === 'local'){
+      }/*else if(this.order.withdrawal === 'local'){
         this.order.change_of_money = this.order.change_of_money - this.valorTotal;
         this.order.cost_freight = 5;
         this.order.total = this.valorTotal + this.order.cost_freight;
         this.order.status = 'inicializado';
         this.orderSvc.createOrder(this.order).subscribe();
-        console.log(this.order);
-      }
+        localStorage.clear();
+        this.router.navigateByUrl('/home');
+      }*/
     }
     else if(this.order.payment !== 'dinheiro'){
       this.order.change_of_money = this.valorTotal;
-      if(this.order.withdrawal === 'casa'){
+      if(this.order.withdrawal === 'local'){
         if(this.order.address_city === null || this.order.address_neighborhood === null ||
           this.order.address_number === null || this.order.address_street === null || this.order.cep === null){
           console.log('erro');
         }
         else{
+          if(this.order.reference_point === null){
+            this.order.reference_point = '';
+          }
           this.order.change_of_money = this.order.change_of_money - this.valorTotal;
           this.order.cost_freight = 5;
           this.order.total = this.valorTotal + this.order.cost_freight;
           this.order.status = 'inicializado';
           this.orderSvc.createOrder(this.order).subscribe();
-          console.log(this.order);
+          localStorage.clear();
+          this.router.navigateByUrl('/home');
         }
-      }else if(this.order.withdrawal === 'local'){
+      }/*else if(this.order.withdrawal === 'local'){
         this.order.change_of_money = this.order.change_of_money - this.valorTotal;
         this.order.cost_freight = 5;
         this.order.total = this.valorTotal + this.order.cost_freight;
         this.order.status = 'inicializado';
         this.orderSvc.createOrder(this.order).subscribe();
-        console.log(this.order);
-      }
+        localStorage.clear();
+        this.router.navigateByUrl('/home');
+      }*/
     }
-    else if(this.order.withdrawal === 'casa'){
+    else if(this.order.withdrawal === 'local'){
       if(this.order.address_city === null || this.order.address_neighborhood === null ||
         this.order.address_number === null || this.order.address_street === null || this.order.cep === null){
         console.log('erro');
       }
       else{
+        if(this.order.reference_point === null){
+          this.order.reference_point = '';
+        }
         this.order.change_of_money = this.order.change_of_money - this.valorTotal;
         this.order.cost_freight = 5;
         this.order.total = this.valorTotal + this.order.cost_freight;
         this.order.status = 'inicializado';
         this.orderSvc.createOrder(this.order).subscribe();
-        console.log(this.order);
+        localStorage.clear();
+        this.router.navigateByUrl('/home');
       }
     }else{
+      if(this.order.reference_point === null){
+        this.order.reference_point = '';
+      }
       this.order.change_of_money = this.order.change_of_money - this.valorTotal;
       this.order.cost_freight = 5;
       this.order.total = this.valorTotal + this.order.cost_freight;
       this.order.status = 'inicializado';
       this.orderSvc.createOrder(this.order).subscribe();
-      console.log(this.order);
+      localStorage.clear();
+      this.router.navigateByUrl('/home');
     }
   }
 
