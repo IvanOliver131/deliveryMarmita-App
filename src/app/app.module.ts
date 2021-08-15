@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TopBarModule } from './top-bar/top-bar.module';
 import { FormsModule } from '@angular/forms';
-import { NgxMaskModule } from 'ngx-mask';
+import { BrMaskerModule } from 'br-mask';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +21,7 @@ import { NgxMaskModule } from 'ngx-mask';
     HttpClientModule,
     TopBarModule,
     FormsModule,
-    NgxMaskModule.forRoot()
+    BrMaskerModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

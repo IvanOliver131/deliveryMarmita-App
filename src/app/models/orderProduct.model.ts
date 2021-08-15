@@ -6,4 +6,5 @@ export class OrderProduct {
     total_item: number;
     order: number;
     product: number;
+    product_name?: string;
 }

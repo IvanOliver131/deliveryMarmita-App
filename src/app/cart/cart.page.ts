@@ -133,6 +133,7 @@ export class CartPage implements OnInit {
           total_item: totalOption + product.price * product.amount,
           order: null,
           product: product.id,
+          product_name: product.name
         });
 
       } else {
@@ -140,10 +141,13 @@ export class CartPage implements OnInit {
           amount: product.amount,
           total_item: product.price * product.amount,
           order: null,
-          product: product.id
+          product: product.id,
+          product_name: product.name
         });
       }
     });
+
+    localStorage.setItem('lst', JSON.stringify(orderProduct));
 
     if (!carrinhoCheio) {
       localStorage.setItem('lstAllProducts', JSON.stringify({
@@ -166,7 +170,6 @@ export class CartPage implements OnInit {
     }
 
     localStorage.valorTotal = this.valorTotal;
-    localStorage.setItem('lst', JSON.stringify(this.allProducts));
     this.router.navigateByUrl('/cart-final');
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IOrder } from '../../models/order.model';
@@ -17,10 +18,10 @@ export class OrderService {
     constructor(private http: HttpClient) { }
 
     createOrder(order: IOrder): Observable <IOrder>{
-      const IOrder = {
+      const iorder = {
         client_name: order.client_name,
         phone: order.phone,
-        cep: order.cep,
+        cep: order.cep? order.cep : '',
         address_street: order.address_city,
         address_number: order.address_number,
         address_neighborhood: order.address_neighborhood,
@@ -34,7 +35,7 @@ export class OrderService {
         total: order.total,
         products: order.products
       };
-      return this.http.post<IOrder>(`${this.baseURLOrder}`, IOrder);
+      return this.http.post<IOrder>(`${this.baseURLOrder}`, iorder);
     }
 
     getCep(){

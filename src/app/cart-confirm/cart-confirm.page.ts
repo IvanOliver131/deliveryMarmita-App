@@ -53,13 +53,14 @@ export class CartConfirmPage implements OnInit {
         console.log('erro, o valor do troco e menor do que o valor total');
       }
       else if(this.order.withdrawal === 'local'){
-        if(this.order.address_city === null || this.order.address_neighborhood === null ||
-          this.order.address_number === null || this.order.address_street === null || this.order.cep === null){
+        if(this.order.address_neighborhood === null ||
+          this.order.address_number === null || this.order.address_street === null){
           console.log('erro');
         }
         else{
-          if(this.order.reference_point === null){
+          if(this.order.reference_point === null || this.order.address_city === null){
             this.order.reference_point = '';
+            this.order.address_city = '';
           }
           this.order.change_of_money = this.order.change_of_money - this.valorTotal;
           this.order.cost_freight = 5;
@@ -69,7 +70,7 @@ export class CartConfirmPage implements OnInit {
           localStorage.clear();
           this.router.navigateByUrl('/home');
         }
-      }/*else if(this.order.withdrawal === 'local'){
+      }/*else if(this.order.withdrawal === 'restaurante'){
         this.order.change_of_money = this.order.change_of_money - this.valorTotal;
         this.order.cost_freight = 5;
         this.order.total = this.valorTotal + this.order.cost_freight;
@@ -82,13 +83,14 @@ export class CartConfirmPage implements OnInit {
     else if(this.order.payment !== 'dinheiro'){
       this.order.change_of_money = this.valorTotal;
       if(this.order.withdrawal === 'local'){
-        if(this.order.address_city === null || this.order.address_neighborhood === null ||
-          this.order.address_number === null || this.order.address_street === null || this.order.cep === null){
-          console.log('erro');
+        if(this.order.address_neighborhood === null ||
+          this.order.address_number === null || this.order.address_street === null){
+          console.log('erro', 'oi');
         }
         else{
-          if(this.order.reference_point === null){
+          if(this.order.reference_point === null || this.order.address_city === null){
             this.order.reference_point = '';
+            this.order.address_city  = '';
           }
           this.order.change_of_money = this.order.change_of_money - this.valorTotal;
           this.order.cost_freight = 5;
@@ -98,7 +100,7 @@ export class CartConfirmPage implements OnInit {
           localStorage.clear();
           this.router.navigateByUrl('/home');
         }
-      }/*else if(this.order.withdrawal === 'local'){
+      }/*else if(this.order.withdrawal === 'restaurante'){
         this.order.change_of_money = this.order.change_of_money - this.valorTotal;
         this.order.cost_freight = 5;
         this.order.total = this.valorTotal + this.order.cost_freight;
@@ -109,13 +111,14 @@ export class CartConfirmPage implements OnInit {
       }*/
     }
     else if(this.order.withdrawal === 'local'){
-      if(this.order.address_city === null || this.order.address_neighborhood === null ||
-        this.order.address_number === null || this.order.address_street === null || this.order.cep === null){
+      if(this.order.address_neighborhood === null ||
+        this.order.address_number === null || this.order.address_street === null){
         console.log('erro');
       }
       else{
-        if(this.order.reference_point === null){
+        if(this.order.reference_point === null || this.order.address_city === null){
           this.order.reference_point = '';
+          this.order.address_city = '';
         }
         this.order.change_of_money = this.order.change_of_money - this.valorTotal;
         this.order.cost_freight = 5;
@@ -126,8 +129,9 @@ export class CartConfirmPage implements OnInit {
         this.router.navigateByUrl('/home');
       }
     }else{
-      if(this.order.reference_point === null){
+      if(this.order.reference_point === null || this.order.address_city === null){
         this.order.reference_point = '';
+        this.order.address_city = '';
       }
       this.order.change_of_money = this.order.change_of_money - this.valorTotal;
       this.order.cost_freight = 5;

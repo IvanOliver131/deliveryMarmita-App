@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -28,25 +28,27 @@ export class CartFinalPage implements OnInit {
     this.lst2 = JSON.parse(localStorage.getItem('lst'));
     this.valorTotal += JSON.parse(localStorage.getItem('valorTotal'));
 
+    console.log(this.lst2);
+
     this.lst2.forEach((p) =>{
       this.productsFinal.push(p);
     });
 
-    this.productsFinal.forEach(p =>{
-      p.price = p.price*p.amount;
-    });
-
-    console.log(this.productsFinal);
+    localStorage.setItem('lst', JSON.stringify(this.productsFinal));
   }
 
   remove(p, i){
     this.productsFinal.splice(i, i+1);
-    this.valorTotal -= p.price;
+    this.valorTotal -= p.total_item;
   }
 
   goToConfirm(){
     localStorage.valorTotal = this.valorTotal;
-    this.router.navigateByUrl('/cart-confirm');
+    if(this.valorTotal !== 0){
+      this.router.navigateByUrl('/cart-confirm');
+    }else{
+      console.log('error');
+    }
   }
 
 }
